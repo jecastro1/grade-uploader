@@ -1,5 +1,6 @@
 from wrappers import Github, Google
 import re
+import logging
 
 
 class Uploader:
@@ -34,10 +35,6 @@ class Uploader:
 
     def upload_grades(self, start_username=None, end_username=None):
         github_usernames = self.get_github_usernames()
-        if ' & ' in github_usernames[0]:
-            pairs = True
-        else:
-            pairs = False
         start_index = (github_usernames.index(start_username) if
                        start_username else 0)
         end_index = (github_usernames.index(end_username) if
@@ -47,19 +44,18 @@ class Uploader:
         sheet_usernames = self.get_sheet_usernames()
         sheet_column_index = self.get_sheet_column_index(self.repo)
         grades = []
-        if pairs:
-            for i, username in enumerate(github_usernames):
+        for i, username in enumerate(github_usernames):
+            logging.debug('{} - {}'.format(i, username))
+            grade = self.get_github_grade(username)
+            if ' & ' in username:
                 username_1, username_2 = username.split(' & ')
-                grade = self.get_github_grade(username)
                 sheet_username_index_1 = sheet_usernames.index(username_1) + 2
                 sheet_username_index_2 = sheet_usernames.index(username_2) + 2
                 grades.append(((sheet_username_index_1, sheet_column_index),
                                grade))
                 grades.append(((sheet_username_index_2, sheet_column_index),
                                grade))
-        else:
-            for i, username in enumerate(github_usernames):
-                grade = self.get_github_grade(username)
+            else:
                 sheet_username_index = sheet_usernames.index(username) + 2
                 grades.append(((sheet_username_index, sheet_column_index),
                                grade))
