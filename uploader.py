@@ -20,7 +20,7 @@ class Uploader:
     def get_github_grade(self, username):
         feedback = self.github.download_text('Correccion/{}/FEEDBACK.md'.format(
             username))
-        grade = float(re.findall('(?:\*\*)(\d\.\d)(?:\*\*)', feedback)[0])
+        grade = float(re.findall('(?:\*\*)(\d\.?\d?)(?:\*\*)', feedback)[0])
         return grade
 
     def get_sheet_usernames(self):
