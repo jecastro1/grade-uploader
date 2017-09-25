@@ -51,3 +51,10 @@ class Google:
 
     def get_worksheet(self, spreadsheet_name, index):
         return self.gc.open(spreadsheet_name).get_worksheet(index)
+
+    @staticmethod
+    def update_cells(worksheet, data):
+        cells = [worksheet.cell(*element[0]) for element in data]
+        for i in range(len(data)):
+            cells[i].value = data[i][1]
+        worksheet.update_cells(cells)
