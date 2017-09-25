@@ -1,4 +1,17 @@
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 import requests
+
+
+class Google:
+    def __init__(self, key_path):
+        scope = ['https://spreadsheets.google.com/feeds']
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+            key_path, scope)
+        self.gc = gspread.authorize(credentials)
+
+    def get_worksheet(self, spreadsheet_name, index):
+        return self.gc.open(spreadsheet_name).get_worksheet(index)
 
 
 class Github:
