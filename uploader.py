@@ -44,8 +44,9 @@ class Uploader:
         sheet_usernames = self.get_sheet_usernames()
         sheet_column_index = self.get_sheet_column_index(self.repo)
         grades = []
+        logging.debug('Getting grades')
         for i, username in enumerate(github_usernames):
-            logging.debug('{} - {}'.format(i, username))
+            logging.debug('{}. {}'.format(i, username))
             grade = self.get_github_grade(username)
             if ' & ' in username:
                 username_1, username_2 = username.split(' & ')
@@ -59,4 +60,5 @@ class Uploader:
                 sheet_username_index = sheet_usernames.index(username) + 2
                 grades.append(((sheet_username_index, sheet_column_index),
                                grade))
+        logging.debug('Updating grades')
         self.google.update_cells(self.worksheet, grades)
