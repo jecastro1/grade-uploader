@@ -8,4 +8,4 @@ Any advice or comment is more than welcome!
 2. Add the `.json` file's name to the `key_path` variable in `main.py`.
 3. Add the Github token to the `token` variable in `main.py`.
 4. Add the name of the repository (e.g. AC07) to the `repo` variable in `main.py`.
-5. Run `main.py`
+5. Run `main.py`.
