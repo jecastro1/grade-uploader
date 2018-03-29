@@ -1,6 +1,6 @@
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import requests
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 class Github:
@@ -32,8 +32,10 @@ class Github:
         response_json = self.get_file(path)
         if isinstance(response_json, dict):
             raise ValueError('Path entered is not a directory')
-        directories = [directory['name'] for directory in response_json if
-                       '.' not in directory['name']]
+        directories = [
+            directory['name'] for directory in response_json
+            if '.' not in directory['name']
+        ]
         return directories
 
     def download_text(self, path, branch='master'):

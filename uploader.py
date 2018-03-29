@@ -1,6 +1,7 @@
-from wrappers import Github, Google
-import re
 import logging
+import re
+
+from grade_uploader.wrappers import Github, Google
 
 
 class Uploader:
@@ -8,7 +9,8 @@ class Uploader:
         self.repo = repo
         self.github = Github('IIC2233', repo, token)
         self.google = Google(key_path)
-        self.worksheet = self.google.get_worksheet('Notas IIC2233 - Privado', 0)
+        self.worksheet = self.google.get_worksheet('Notas IIC2233 - Privado',
+                                                   0)
 
     def get_github_usernames(self):
         # Github places directories beginning with an uppercase letter before
@@ -18,8 +20,8 @@ class Uploader:
         return usernames
 
     def get_github_grade(self, username):
-        feedback = self.github.download_text('Correccion/{}/FEEDBACK.md'.format(
-            username))
+        feedback = self.github.download_text(
+            'Correccion/{}/FEEDBACK.md'.format(username))
         grade = float(re.findall('(?:\*\*)(\d\.?\d*)(?:\*\*)', feedback)[0])
         return grade
 
@@ -35,10 +37,10 @@ class Uploader:
 
     def upload_grades(self, start_username=None, end_username=None):
         github_usernames = self.get_github_usernames()
-        start_index = (github_usernames.index(start_username) if
-                       start_username else 0)
-        end_index = (github_usernames.index(end_username) if
-                     end_username else len(github_usernames)) + 1
+        start_index = (github_usernames.index(start_username)
+                       if start_username else 0)
+        end_index = (github_usernames.index(end_username)
+                     if end_username else len(github_usernames)) + 1
         github_usernames = github_usernames[start_index:end_index]
 
         sheet_usernames = self.get_sheet_usernames()

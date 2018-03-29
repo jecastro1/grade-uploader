@@ -1,5 +1,6 @@
-from uploader import Uploader
 import logging
+
+from grade_uploader.uploader import Uploader
 
 if __name__ == '__main__':
     token = ''  # Github API token
