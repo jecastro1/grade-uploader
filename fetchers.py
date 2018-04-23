@@ -4,7 +4,7 @@ from os.path import join
 
 from grade_uploader.wrappers import Github
 
-REGEX_ITEM_GRADES = '(?:\|\s*)(\w+)(?:\s*\|\s*)(\d\.\d+)(?:\s*\|)'
+REGEX_ITEM_GRADES = '(?:\s*)(\w+)(?:\s*\|\s*)(\d\.\d+)(?:\s*)'
 REGEX_FINAL_GRADE = '(?:\\*\\*)(\\d\\.?\\d*)(?:\\*\\*)'
 ORG = 'IIC2233'
 
