@@ -2,6 +2,9 @@ import json
 import re
 from os.path import join
 
+import logging
+import numpy as np
+
 from grade_uploader.wrappers import Github
 
 REGEX_ITEM_GRADES = '(?:\s*)(\w+)(?:\s*\|\s*)(\d\.\d+)(?:\s*)'
@@ -30,7 +33,10 @@ class GradesFetcher:
             x: float(y)
             for x, y in re.findall(REGEX_ITEM_GRADES, feedback)
         }
-        data['Nota'] = float(re.findall(REGEX_FINAL_GRADE, feedback)[0])
+        try:
+            data['Nota'] = float(re.findall(REGEX_FINAL_GRADE, feedback)[0])
+        except IndexError as e:
+            logging.warning("%s when trying to get data of %s", e, username)
         data['Sección'] = self._get_user_section(username)
         return data
 
