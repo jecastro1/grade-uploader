@@ -29,6 +29,7 @@ class GradesFetcher:
 
     def _get_data(self, username):
         feedback = self.github.download_text(self._get_user_folder(username))
+        feedback = feedback.replace(',', '.')
         data = {
             x: float(y)
             for x, y in re.findall(REGEX_ITEM_GRADES, feedback)
