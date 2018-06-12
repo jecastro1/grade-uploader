@@ -24,11 +24,18 @@ class GradesFetcher:
         with open(join(self.student_db, user_file), 'r') as file:
             return json.loads(file.read())['section']
 
-    def _get_user_folder(self, username):
+    def _get_pair_section(self, pairname):
+        if ' & ' in pairname:
+            users = pairname.split(' & ')
+        else:
+            users = (pairname, )
+        return self._get_user_section(users[0])
+
+    def _get_pair_folder(self, username):
         return 'Correccion/{}/FEEDBACK.md'.format(username)
 
-    def _get_data(self, username):
-        feedback = self.github.download_text(self._get_user_folder(username))
+    def _get_data(self, pairname):
+        feedback = self.github.download_text(self._get_pair_folder(pairname))
         feedback = feedback.replace(',', '.')
         data = {
             x: float(y)
@@ -37,8 +44,8 @@ class GradesFetcher:
         try:
             data['Nota'] = float(re.findall(REGEX_FINAL_GRADE, feedback)[0])
         except IndexError as e:
-            logging.warning("%s when trying to get data of %s", e, username)
-        data['Sección'] = self._get_user_section(username)
+            logging.warning("%s when trying to get data of %s", e, pairname)
+        data['Sección'] = self._get_pair_section(pairname)
         return data
 
     @property
